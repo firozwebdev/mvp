@@ -1,20 +1,27 @@
 {
-  "name": "vite-vue-tailwind-template",
+  "name": "realtime-translation-mvp",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "node server/index.js"
   },
   "dependencies": {
-    "vue": "^3.4.0"
+    "vue": "^3.4.0",
+    "socket.io-client": "^4.7.5",
+    "peerjs": "^1.5.2",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "vite": "^4.0.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "tailwindcss": "^3.0.0",
     "postcss": "^8.0.0",
-    "autoprefixer": "^10.0.0"
+    "autoprefixer": "^10.0.0",
+    "socket.io": "^4.7.5",
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
   }
-} 
+}

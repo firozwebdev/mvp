@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Conversation Translator</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --gray: #64748b;
+            --white: #ffffff;
+            --border: #334155;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-light) 100%);
+            color: var(--white);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo i {
+            font-size: 2em;
+            color: var(--primary);
+        }
+
+        .logo-text {
+            font-size: 1.8em;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tagline {
+            font-size: 1em;
+            color: var(--gray);
+            margin-top: 10px;
+        }
+
+        /* Main Layout */
+        .conversation-layout {
+            display: grid;
+            grid-template-columns: 1fr 80px 1fr;
+            gap: 20px;
+            flex: 1;
+            align-items: stretch;
+        }
+
+        /* User Panels */
+        .user-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius);
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            min-height: 600px;
+        }
+
+        .user-panel.user-a {
+            border-left: 4px solid var(--primary);
+        }
+
+        .user-panel.user-b {
+            border-right: 4px solid var(--secondary);
+        }
+
+        .user-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: white;
+        }
+
+        .user-a .user-avatar {
+            background: var(--primary);
+        }
+
+        .user-b .user-avatar {
+            background: var(--secondary);
+        }
+
+        .user-details h3 {
+            font-size: 1.2em;
+            margin-bottom: 4px;
+        }
+
+        .user-details p {
+            color: var(--gray);
+            font-size: 0.9em;
+        }
+
+        /* Language Selection */
+        .language-select {
+            position: relative;
+        }
+
+        .language-select select {
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--white);
+            font-size: 14px;
+            cursor: pointer;
+            appearance: none;
+            min-width: 120px;
+        }
+
+        /* Microphone Button */
+        .mic-button {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: white;
+            position: relative;
+        }
+
+        .user-a .mic-button {
+            background: linear-gradient(45deg, var(--primary), #1d4ed8);
+        }
+
+        .user-b .mic-button {
+            background: linear-gradient(45deg, var(--secondary), #059669);
+        }
+
+        .mic-button:hover {
+            transform: scale(1.05);
+        }
+
+        .mic-button.listening {
+            animation: pulse 1.5s infinite;
+        }
+
+        .mic-button.speaking {
+            animation: speak 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes speak {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Conversation Area */
+        .conversation-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 12px;
+            max-width: 85%;
+            word-wrap: break-word;
+            position: relative;
+            animation: messageSlide 0.3s ease-out;
+        }
+
+        @keyframes messageSlide {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.original {
+            background: rgba(37, 99, 235, 0.2);
+            border: 1px solid rgba(37, 99, 235, 0.3);
+            align-self: flex-start;
+        }
+
+        .message.translated {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            align-self: flex-end;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.8em;
+            color: var(--gray);
+        }
+
+        .message-text {
+            font-size: 1em;
+            line-height: 1.4;
+        }
+
+        .message-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .action-btn {
+            padding: 4px 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 6px;
+            color: var(--white);
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Center Controls */
+        .center-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .mode-toggle {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius);
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .mode-toggle h4 {
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            color: var(--gray);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: var(--border);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .toggle-switch.active {
+            background: var(--success);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(30px);
+        }
+
+        .swap-button {
+            background: var(--accent);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+        }
+
+        .swap-button:hover {
+            background: #d97706;
+            transform: rotate(180deg);
+        }
+
+        /* Status */
+        .status-bar {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: var(--radius);
+            margin-top: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .status-text {
+            font-size: 0.9em;
+            color: var(--gray);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+            background: var(--success);
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .conversation-layout {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .center-controls {
+                order: -1;
+                flex-direction: row;
+                justify-content: space-around;
+            }
+            
+            .user-panel {
+                min-height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-comments"></i>
+                <div>
+                    <div class="logo-text">Real-Time Conversation Translator</div>
+                    <div class="tagline">Live bidirectional translation for natural conversations</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Conversation Layout -->
+        <div class="conversation-layout">
+            <!-- User A Panel -->
+            <div class="user-panel user-a">
+                <div class="user-header">
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-details">
+                            <h3>User A</h3>
+                            <p>Speaker</p>
+                        </div>
+                    </div>
+                    <div class="language-select">
+                        <select id="userALanguage">
+                            <option value="en-US">🇺🇸 English</option>
+                            <option value="es-ES">🇪🇸 Spanish</option>
+                            <option value="fr-FR">🇫🇷 French</option>
+                            <option value="de-DE">🇩🇪 German</option>
+                            <option value="it-IT">🇮🇹 Italian</option>
+                            <option value="pt-PT">🇵🇹 Portuguese</option>
+                            <option value="ru-RU">🇷🇺 Russian</option>
+                            <option value="ja-JP">🇯🇵 Japanese</option>
+                            <option value="ko-KR">🇰🇷 Korean</option>
+                            <option value="zh-CN">🇨🇳 Chinese</option>
+                            <option value="ar-SA">🇸🇦 Arabic</option>
+                            <option value="hi-IN">🇮🇳 Hindi</option>
+                            <option value="bn-BD">🇧🇩 Bengali</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button class="mic-button" id="micButtonA" onclick="toggleListening('A')">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                
+                <div class="conversation-area" id="conversationA">
+                    <div style="text-align: center; color: var(--gray); padding: 40px 20px;">
+                        <i class="fas fa-microphone" style="font-size: 2em; margin-bottom: 15px; opacity: 0.3;"></i>
+                        <p>Click the microphone to start speaking</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center Controls -->
+            <div class="center-controls">
+                <div class="mode-toggle">
+                    <h4>Auto Mode</h4>
+                    <div class="toggle-switch" id="autoModeToggle" onclick="toggleAutoMode()"></div>
+                </div>
+                
+                <button class="swap-button" onclick="swapLanguages()">
+                    <i class="fas fa-exchange-alt"></i>
+                </button>
+            </div>
+
+            <!-- User B Panel -->
+            <div class="user-panel user-b">
+                <div class="user-header">
+                    <div class="language-select">
+                        <select id="userBLanguage">
+                            <option value="zh-CN">🇨🇳 Chinese</option>
+                            <option value="en-US">🇺🇸 English</option>
+                            <option value="es-ES">🇪🇸 Spanish</option>
+                            <option value="fr-FR">🇫🇷 French</option>
+                            <option value="de-DE">🇩🇪 German</option>
+                            <option value="it-IT">🇮🇹 Italian</option>
+                            <option value="pt-PT">🇵🇹 Portuguese</option>
+                            <option value="ru-RU">🇷🇺 Russian</option>
+                            <option value="ja-JP">🇯🇵 Japanese</option>
+                            <option value="ko-KR">🇰🇷 Korean</option>
+                            <option value="ar-SA">🇸🇦 Arabic</option>
+                            <option value="hi-IN">🇮🇳 Hindi</option>
+                            <option value="bn-BD">🇧🇩 Bengali</option>
+                        </select>
+                    </div>
+                    <div class="user-info">
+                        <div class="user-details" style="text-align: right;">
+                            <h3>User B</h3>
+                            <p>Listener</p>
+                        </div>
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="mic-button" id="micButtonB" onclick="toggleListening('B')">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                
+                <div class="conversation-area" id="conversationB">
+                    <div style="text-align: center; color: var(--gray); padding: 40px 20px;">
+                        <i class="fas fa-language" style="font-size: 2em; margin-bottom: 15px; opacity: 0.3;"></i>
+                        <p>Translations will appear here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <span class="status-indicator"></span>
+            <span class="status-text" id="statusText">Ready for real-time conversation</span>
+        </div>
+    </div>
+
+    <script>
+        // Real-Time Conversation Translator
+        class ConversationTranslator {
+            constructor() {
+                this.recognition = null;
+                this.synthesis = window.speechSynthesis;
+                this.isListening = false;
+                this.isProcessing = false; // Flag to prevent overlapping operations
+                this.currentUser = null;
+                this.autoMode = false;
+                this.conversationHistory = [];
+
+                this.init();
+            }
+
+            init() {
+                this.setupSpeechRecognition();
+                this.setupEventListeners();
+                this.updateStatus('Ready for real-time conversation');
+                console.log('🚀 Real-Time Conversation Translator initialized');
+            }
+
+            setupSpeechRecognition() {
+                if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                    this.recognition = new SpeechRecognition();
+
+                    this.recognition.continuous = true;
+                    this.recognition.interimResults = false;
+                    this.recognition.maxAlternatives = 1;
+
+                    this.recognition.onstart = () => {
+                        this.updateStatus(`🎤 Listening to User ${this.currentUser}...`);
+                        this.setMicrophoneState(this.currentUser, 'listening');
+                    };
+
+                    this.recognition.onresult = (event) => {
+                        const result = event.results[event.results.length - 1];
+                        if (result.isFinal) {
+                            const transcript = result[0].transcript.trim();
+                            const confidence = result[0].confidence || 0;
+
+                            // Ensure we have a valid current user
+                            if (!this.currentUser) {
+                                console.warn('⚠️ No current user set, ignoring result');
+                                return;
+                            }
+
+                            console.log(`🎤 User ${this.currentUser} said:`, transcript, 'Confidence:', confidence);
+
+                            // Stop listening immediately to prevent overlapping
+                            this.isListening = false;
+                            this.setMicrophoneState(this.currentUser, 'idle');
+
+                            // Process the message
+                            this.processMessage(this.currentUser, transcript, confidence);
+                        }
+                    };
+
+                    this.recognition.onerror = (event) => {
+                        console.error('Speech recognition error:', event.error);
+                        this.updateStatus(`❌ Error: ${event.error}`);
+                        this.stopListening();
+                    };
+
+                    this.recognition.onend = () => {
+                        console.log('🎤 Speech recognition ended');
+
+                        // Always reset listening state when recognition ends
+                        this.isListening = false;
+
+                        // Clean up microphone states
+                        this.setMicrophoneState('A', 'idle');
+                        this.setMicrophoneState('B', 'idle');
+
+                        // Update status if not processing
+                        if (!this.isProcessing) {
+                            this.updateStatus('Ready for real-time conversation');
+                        }
+                    };
+                } else {
+                    this.updateStatus('❌ Speech recognition not supported. Please use Chrome, Edge, or Safari.');
+                }
+            }
+
+            setupEventListeners() {
+                this.synthesis.addEventListener('voiceschanged', () => {
+                    console.log('✅ Voices loaded:', this.synthesis.getVoices().length);
+                });
+            }
+
+            toggleListening(user) {
+                if (this.isListening && this.currentUser === user) {
+                    this.stopListening();
+                } else {
+                    this.startListening(user);
+                }
+            }
+
+            startListening(user) {
+                if (!this.recognition) {
+                    this.updateStatus('❌ Speech recognition not available');
+                    return;
+                }
+
+                // Prevent starting if already listening or processing
+                if (this.isListening || this.isProcessing) {
+                    console.log(`⏸️ Cannot start listening - Listening: ${this.isListening}, Processing: ${this.isProcessing}`);
+                    return;
+                }
+
+                console.log(`🎤 Starting to listen to User ${user}`);
+
+                // Force stop any existing recognition
+                try {
+                    this.recognition.stop();
+                } catch (e) {
+                    // Ignore errors when stopping
+                }
+
+                // Set up for new recognition
+                this.currentUser = user;
+                this.isListening = true;
+
+                const languageSelect = user === 'A' ? 'userALanguage' : 'userBLanguage';
+                const selectedLanguage = document.getElementById(languageSelect).value;
+                this.recognition.lang = selectedLanguage;
+
+                // Small delay to ensure clean state
+                setTimeout(() => {
+                    if (!this.isListening || this.currentUser !== user) {
+                        console.log('⚠️ State changed, aborting start');
+                        return;
+                    }
+
+                    try {
+                        this.recognition.start();
+                        console.log(`🎤 Successfully started listening to User ${user} in ${selectedLanguage}`);
+                    } catch (error) {
+                        console.error('Failed to start recognition:', error);
+                        this.updateStatus('❌ Failed to start listening');
+                        this.isListening = false;
+                        this.currentUser = null;
+                        this.setMicrophoneState(user, 'idle');
+                    }
+                }, 100);
+            }
+
+            stopListening() {
+                if (this.recognition && this.isListening) {
+                    try {
+                        this.recognition.stop();
+                        console.log('🛑 Stopped speech recognition');
+                    } catch (error) {
+                        console.warn('Error stopping recognition:', error);
+                    }
+                }
+
+                // Clean up state
+                this.isListening = false;
+                this.setMicrophoneState('A', 'idle');
+                this.setMicrophoneState('B', 'idle');
+
+                if (!this.autoMode) {
+                    this.updateStatus('Ready for real-time conversation');
+                    this.currentUser = null;
+                }
+            }
+
+            setMicrophoneState(user, state) {
+                const micButton = document.getElementById(`micButton${user}`);
+                const icon = micButton.querySelector('i');
+
+                micButton.classList.remove('listening', 'speaking');
+
+                switch(state) {
+                    case 'listening':
+                        micButton.classList.add('listening');
+                        icon.className = 'fas fa-microphone';
+                        break;
+                    case 'speaking':
+                        micButton.classList.add('speaking');
+                        icon.className = 'fas fa-volume-up';
+                        break;
+                    case 'idle':
+                    default:
+                        icon.className = 'fas fa-microphone';
+                        break;
+                }
+            }
+
+            async processMessage(fromUser, text, confidence) {
+                // Validate input
+                if (!fromUser || !text.trim()) {
+                    console.warn('⚠️ Invalid message data, skipping processing');
+                    return;
+                }
+
+                // Set processing flag to prevent overlapping
+                this.isProcessing = true;
+
+                const toUser = fromUser === 'A' ? 'B' : 'A';
+                const fromLang = this.getLanguageCode(fromUser);
+                const toLang = this.getLanguageCode(toUser);
+
+                console.log(`📝 Processing message from User ${fromUser} to User ${toUser}`);
+
+                // Add original message
+                this.addMessage(fromUser, text, 'original', fromLang, confidence);
+                this.updateStatus('🔄 Translating...');
+
+                try {
+                    // Translate the text
+                    const translation = await this.translateText(text, fromLang, toLang);
+
+                    // Add translated message
+                    this.addMessage(toUser, translation, 'translated', toLang);
+
+                    // Speak the translation
+                    await this.speakTranslation(translation, toLang, toUser, fromUser);
+
+                    // Store in conversation history
+                    this.conversationHistory.push({
+                        timestamp: new Date().toLocaleTimeString(),
+                        fromUser, toUser, original: text, translation,
+                        fromLang, toLang, confidence
+                    });
+
+                    console.log(`✅ Successfully processed message from User ${fromUser}`);
+
+                } catch (error) {
+                    console.error('Translation error:', error);
+                    this.updateStatus('❌ Translation failed');
+                    this.addMessage(toUser, `[Translation failed: ${text}]`, 'translated', toLang);
+
+                    // In auto mode, still continue the conversation
+                    if (this.autoMode) {
+                        setTimeout(() => {
+                            this.isProcessing = false;
+                            this.startListening(toUser);
+                        }, 2000);
+                        return;
+                    }
+                } finally {
+                    // Always clear processing flag
+                    this.isProcessing = false;
+                }
+            }
+
+            addMessage(user, text, type, language, confidence = null) {
+                // Validate user parameter
+                if (!user || (user !== 'A' && user !== 'B')) {
+                    console.error('❌ Invalid user for addMessage:', user);
+                    return;
+                }
+
+                const conversationArea = document.getElementById(`conversation${user}`);
+
+                if (!conversationArea) {
+                    console.error(`❌ Conversation area not found for user ${user}`);
+                    return;
+                }
+
+                if (conversationArea.children.length === 1 &&
+                    conversationArea.children[0].style.textAlign === 'center') {
+                    conversationArea.innerHTML = '';
+                }
+
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${type}`;
+
+                const confidenceText = confidence ? ` (${Math.round(confidence * 100)}%)` : '';
+                const typeLabel = type === 'original' ? '🎤 You said' : '🌍 Translation';
+
+                // Escape text for HTML safety
+                const safeText = text.replace(/'/g, "&#39;").replace(/"/g, "&quot;");
+
+                messageDiv.innerHTML = `
+                    <div class="message-header">
+                        <span>${typeLabel}${confidenceText}</span>
+                        <span>${new Date().toLocaleTimeString()}</span>
+                    </div>
+                    <div class="message-text">${text}</div>
+                    <div class="message-actions">
+                        <button class="action-btn" onclick="translator.copyText('${safeText}')">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                        <button class="action-btn" onclick="translator.speakText('${safeText}', '${language}')">
+                            <i class="fas fa-volume-up"></i> Replay
+                        </button>
+                    </div>
+                `;
+
+                conversationArea.appendChild(messageDiv);
+                conversationArea.scrollTop = conversationArea.scrollHeight;
+
+                console.log(`💬 Added ${type} message for User ${user}:`, text);
+            }
+
+            async translateText(text, fromLang, toLang) {
+                const fromCode = fromLang.split('-')[0];
+                const toCode = toLang.split('-')[0];
+
+                if (fromCode === toCode) return text;
+
+                try {
+                    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${fromCode}|${toCode}`;
+                    const response = await fetch(url);
+                    const data = await response.json();
+
+                    if (data.responseStatus === 200 && data.responseData?.translatedText) {
+                        return data.responseData.translatedText;
+                    }
+
+                    const commonPhrases = {
+                        'en|zh': { 'hello': '你好', 'thank you': '谢谢', 'how are you': '你好吗' },
+                        'zh|en': { '你好': 'hello', '谢谢': 'thank you', '你好吗': 'how are you' },
+                        'en|bn': { 'hello': 'হ্যালো', 'thank you': 'ধন্যবাদ' },
+                        'bn|en': { 'হ্যালো': 'hello', 'ধন্যবাদ': 'thank you', 'আমি বাড়ি গিয়ে ভাত খাব': 'I will go home and eat rice' }
+                    };
+
+                    const langPair = `${fromCode}|${toCode}`;
+                    const phrases = commonPhrases[langPair];
+
+                    if (phrases) {
+                        const lowerText = text.toLowerCase().trim();
+                        for (const [original, translated] of Object.entries(phrases)) {
+                            if (lowerText.includes(original.toLowerCase())) {
+                                return translated;
+                            }
+                        }
+                    }
+
+                    throw new Error('Translation failed');
+
+                } catch (error) {
+                    console.error('Translation error:', error);
+                    throw error;
+                }
+            }
+
+            async speakTranslation(text, language, toUser, fromUser) {
+                return new Promise((resolve) => {
+                    this.setMicrophoneState(toUser, 'speaking');
+                    this.updateStatus(`🔊 Speaking to User ${toUser}...`);
+
+                    this.synthesis.cancel();
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    const voice = this.getBestVoice(language);
+
+                    if (voice) utterance.voice = voice;
+                    utterance.volume = 0.8;
+                    utterance.rate = 0.9;
+
+                    utterance.onstart = () => {
+                        console.log(`🔊 Started speaking to User ${toUser}: "${text}"`);
+                    };
+
+                    utterance.onend = () => {
+                        this.setMicrophoneState(toUser, 'idle');
+                        console.log(`🔊 Finished speaking to User ${toUser}`);
+
+                        // Smart conversation flow
+                        if (this.autoMode) {
+                            this.updateStatus(`🎤 Waiting for User ${toUser} to respond...`);
+
+                            // Give the user time to process what they heard, then start listening
+                            setTimeout(() => {
+                                if (this.autoMode && !this.isListening && !this.isProcessing) {
+                                    console.log(`🔄 Auto mode: Now listening to User ${toUser} for response`);
+                                    this.startListening(toUser);
+                                } else {
+                                    console.log(`⏸️ Not starting listening - Listening: ${this.isListening}, Processing: ${this.isProcessing}`);
+                                }
+                            }, 1500); // Natural conversation delay
+                        } else {
+                            this.updateStatus('Ready for real-time conversation');
+                        }
+
+                        resolve();
+                    };
+
+                    utterance.onerror = (event) => {
+                        console.error('Speech synthesis error:', event.error);
+                        this.setMicrophoneState(toUser, 'idle');
+                        this.updateStatus('❌ Speech synthesis failed');
+                        resolve();
+                    };
+
+                    this.synthesis.speak(utterance);
+                });
+            }
+
+            getBestVoice(languageCode) {
+                const voices = this.synthesis.getVoices();
+                const langCode = languageCode.split('-')[0];
+                return voices.find(v => v.lang.startsWith(langCode)) || voices[0];
+            }
+
+            getLanguageCode(user) {
+                const selectId = user === 'A' ? 'userALanguage' : 'userBLanguage';
+                return document.getElementById(selectId).value;
+            }
+
+            updateStatus(message) {
+                document.getElementById('statusText').textContent = message;
+            }
+
+            toggleAutoMode() {
+                this.autoMode = !this.autoMode;
+                const toggle = document.getElementById('autoModeToggle');
+
+                if (this.autoMode) {
+                    toggle.classList.add('active');
+                    this.updateStatus('🤖 Auto mode enabled - Continuous conversation');
+                } else {
+                    toggle.classList.remove('active');
+                    this.updateStatus('👤 Manual mode - Click microphones to speak');
+                    this.stopListening();
+                }
+            }
+
+            swapLanguages() {
+                const userASelect = document.getElementById('userALanguage');
+                const userBSelect = document.getElementById('userBLanguage');
+                [userASelect.value, userBSelect.value] = [userBSelect.value, userASelect.value];
+                this.updateStatus('🔄 Languages swapped');
+            }
+
+            copyText(text) {
+                navigator.clipboard.writeText(text).then(() => {
+                    this.updateStatus('📋 Copied to clipboard');
+                    setTimeout(() => this.updateStatus('Ready for real-time conversation'), 2000);
+                });
+            }
+
+            speakText(text, language) {
+                this.synthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                const voice = this.getBestVoice(language);
+                if (voice) utterance.voice = voice;
+                this.synthesis.speak(utterance);
+            }
+        }
+
+        // Initialize the application
+        const translator = new ConversationTranslator();
+
+        // Global functions
+        function toggleListening(user) { translator.toggleListening(user); }
+        function toggleAutoMode() { translator.toggleAutoMode(); }
+        function swapLanguages() { translator.swapLanguages(); }
+    </script>
+</body>
+</html>
