@@ -296,7 +296,7 @@ app.get('/room/:roomCode', (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`🚀 Real-time translation server running on port ${PORT}`);
   console.log(`📡 WebSocket server ready for connections`);

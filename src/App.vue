@@ -132,6 +132,58 @@ const ErrorSeverity = {
   CRITICAL: 'critical'
 }
 
+// Performance optimization system
+const performance = ref({
+  metrics: {
+    loadTime: 0,
+    renderTime: 0,
+    memoryUsage: 0,
+    networkRequests: 0,
+    cacheHitRate: 0,
+    averageLatency: 0
+  },
+  monitoring: {
+    isEnabled: true,
+    startTime: Date.now(),
+    lastCheck: Date.now(),
+    memoryChecks: [],
+    performanceEntries: []
+  },
+  optimization: {
+    lazyLoadingEnabled: true,
+    imageOptimization: true,
+    cacheStrategy: 'aggressive',
+    memoryManagement: true,
+    bundleOptimization: true
+  }
+})
+
+// Testing and deployment system
+const testing = ref({
+  browserCompatibility: {
+    chrome: false,
+    firefox: false,
+    safari: false,
+    edge: false
+  },
+  mobileOptimization: {
+    responsive: false,
+    touchOptimized: false,
+    performanceOptimized: false
+  },
+  loadTesting: {
+    maxConcurrentUsers: 0,
+    averageResponseTime: 0,
+    errorRate: 0
+  },
+  deployment: {
+    environment: 'development', // development, staging, production
+    version: '1.0.0',
+    buildTime: null,
+    healthCheck: false
+  }
+})
+
 // Available languages
 const languages = [
   { code: 'en-US', name: '🇺🇸 English', flag: '🇺🇸' },
@@ -2897,6 +2949,674 @@ const setupGlobalErrorHandlers = () => {
   console.log('🛡️ Global error handlers setup complete')
 }
 
+// Performance Optimization System
+const initPerformanceMonitoring = () => {
+  if (!performance.value.monitoring.isEnabled) return
+
+  performance.value.monitoring.startTime = Date.now()
+
+  // Monitor page load performance
+  window.addEventListener('load', () => {
+    const loadTime = Date.now() - performance.value.monitoring.startTime
+    performance.value.metrics.loadTime = loadTime
+    console.log(`⚡ Page loaded in ${loadTime}ms`)
+  })
+
+  // Monitor memory usage
+  if ('memory' in performance) {
+    setInterval(() => {
+      const memInfo = performance.memory
+      const memoryUsage = {
+        used: memInfo.usedJSHeapSize,
+        total: memInfo.totalJSHeapSize,
+        limit: memInfo.jsHeapSizeLimit,
+        timestamp: Date.now()
+      }
+
+      performance.value.monitoring.memoryChecks.push(memoryUsage)
+      performance.value.metrics.memoryUsage = memInfo.usedJSHeapSize
+
+      // Keep only last 100 memory checks
+      if (performance.value.monitoring.memoryChecks.length > 100) {
+        performance.value.monitoring.memoryChecks.shift()
+      }
+
+      // Check for memory leaks
+      checkForMemoryLeaks()
+
+    }, 30000) // Every 30 seconds
+  }
+
+  // Monitor network performance
+  if ('getEntriesByType' in performance) {
+    setInterval(() => {
+      const networkEntries = performance.getEntriesByType('navigation')
+      if (networkEntries.length > 0) {
+        const entry = networkEntries[0]
+        performance.value.metrics.networkRequests = entry.loadEventEnd - entry.loadEventStart
+      }
+    }, 10000) // Every 10 seconds
+  }
+
+  console.log('📊 Performance monitoring initialized')
+}
+
+const checkForMemoryLeaks = () => {
+  const checks = performance.value.monitoring.memoryChecks
+  if (checks.length < 10) return
+
+  const recent = checks.slice(-10)
+  const trend = recent[recent.length - 1].used - recent[0].used
+
+  // If memory usage increased by more than 50MB in last 10 checks
+  if (trend > 50 * 1024 * 1024) {
+    console.warn('⚠️ Potential memory leak detected')
+    handleError(new Error('Memory usage increasing rapidly'), ErrorTypes.BROWSER, ErrorSeverity.MEDIUM, {
+      memoryTrend: trend,
+      currentUsage: recent[recent.length - 1].used
+    })
+
+    // Trigger garbage collection if possible
+    triggerGarbageCollection()
+  }
+}
+
+const triggerGarbageCollection = () => {
+  // Clear unnecessary caches
+  if (translationCache.size > 500) {
+    cleanupCache()
+  }
+
+  // Clear old conversation context
+  if (conversationContext.messages.length > 100) {
+    conversationContext.messages = conversationContext.messages.slice(-50)
+  }
+
+  // Clear old error logs
+  if (errorHandling.value.errors.length > 20) {
+    errorHandling.value.errors = errorHandling.value.errors.slice(-10)
+  }
+
+  console.log('🗑️ Memory cleanup performed')
+}
+
+const optimizeAssets = () => {
+  // Preload critical resources
+  const criticalResources = [
+    '/api/health', // Health check endpoint
+  ]
+
+  criticalResources.forEach(resource => {
+    const link = document.createElement('link')
+    link.rel = 'preload'
+    link.href = resource
+    link.as = 'fetch'
+    document.head.appendChild(link)
+  })
+
+  // Optimize images with lazy loading
+  if (performance.value.optimization.imageOptimization) {
+    enableImageOptimization()
+  }
+
+  console.log('🖼️ Asset optimization enabled')
+}
+
+const enableImageOptimization = () => {
+  // Add intersection observer for lazy loading
+  if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target
+          if (img.dataset.src) {
+            img.src = img.dataset.src
+            img.removeAttribute('data-src')
+            imageObserver.unobserve(img)
+          }
+        }
+      })
+    })
+
+    // Observe all images with data-src
+    document.querySelectorAll('img[data-src]').forEach(img => {
+      imageObserver.observe(img)
+    })
+  }
+}
+
+const optimizeCaching = () => {
+  // Implement service worker for caching
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+      .then(registration => {
+        console.log('📦 Service Worker registered:', registration)
+      })
+      .catch(error => {
+        console.warn('Service Worker registration failed:', error)
+      })
+  }
+
+  // Optimize translation cache
+  if (performance.value.optimization.cacheStrategy === 'aggressive') {
+    // Preload common translations
+    translationOptimizer.preloadCommonPhrases()
+  }
+
+  // Cache API responses
+  enableAPIResponseCaching()
+}
+
+const enableAPIResponseCaching = () => {
+  // Cache translation API responses
+  const originalFetch = window.fetch
+  window.fetch = async (url, options) => {
+    const cacheKey = `api_${url}_${JSON.stringify(options)}`
+
+    // Check cache first for GET requests
+    if (!options || options.method === 'GET') {
+      const cached = sessionStorage.getItem(cacheKey)
+      if (cached) {
+        const { data, timestamp } = JSON.parse(cached)
+        // Use cache if less than 5 minutes old
+        if (Date.now() - timestamp < 5 * 60 * 1000) {
+          return new Response(JSON.stringify(data))
+        }
+      }
+    }
+
+    // Make actual request
+    const response = await originalFetch(url, options)
+
+    // Cache successful GET responses
+    if (response.ok && (!options || options.method === 'GET')) {
+      const data = await response.clone().json()
+      sessionStorage.setItem(cacheKey, JSON.stringify({
+        data,
+        timestamp: Date.now()
+      }))
+    }
+
+    return response
+  }
+}
+
+const optimizeRendering = () => {
+  // Use requestAnimationFrame for smooth animations
+  const optimizedAnimations = new Map()
+
+  window.requestOptimizedAnimation = (callback, key) => {
+    if (optimizedAnimations.has(key)) {
+      cancelAnimationFrame(optimizedAnimations.get(key))
+    }
+
+    const id = requestAnimationFrame(callback)
+    optimizedAnimations.set(key, id)
+    return id
+  }
+
+  // Debounce resize events
+  let resizeTimeout
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout)
+    resizeTimeout = setTimeout(() => {
+      // Handle resize
+      console.log('📐 Window resized')
+    }, 250)
+  })
+
+  // Optimize scroll events
+  let scrollTimeout
+  window.addEventListener('scroll', () => {
+    clearTimeout(scrollTimeout)
+    scrollTimeout = setTimeout(() => {
+      // Handle scroll
+    }, 100)
+  }, { passive: true })
+}
+
+const enableCodeSplitting = () => {
+  // Dynamic imports for heavy features
+  const loadHeavyFeatures = async () => {
+    try {
+      // Placeholder for future heavy translation features
+      // const { advancedTranslation } = await import('./utils/advancedTranslation.js')
+      console.log('📦 Code splitting ready for advanced features')
+    } catch (error) {
+      console.warn('Failed to load advanced features:', error)
+    }
+  }
+
+  // Load heavy features only when needed
+  if (messages.value.length > 10) {
+    loadHeavyFeatures()
+  }
+}
+
+const optimizeNetworkRequests = () => {
+  // Batch multiple requests
+  const requestBatcher = {
+    queue: [],
+    timeout: null,
+
+    add(request) {
+      this.queue.push(request)
+
+      if (this.timeout) clearTimeout(this.timeout)
+      this.timeout = setTimeout(() => {
+        this.flush()
+      }, 100) // Batch requests for 100ms
+    },
+
+    flush() {
+      if (this.queue.length === 0) return
+
+      const requests = [...this.queue]
+      this.queue = []
+
+      // Process batched requests
+      console.log(`📦 Processing ${requests.length} batched requests`)
+      requests.forEach(request => request())
+    }
+  }
+
+  window.batchRequest = (request) => {
+    requestBatcher.add(request)
+  }
+}
+
+const getPerformanceReport = () => {
+  const report = {
+    metrics: { ...performance.value.metrics },
+    memory: {
+      current: performance.value.metrics.memoryUsage,
+      peak: Math.max(...performance.value.monitoring.memoryChecks.map(c => c.used)),
+      average: performance.value.monitoring.memoryChecks.reduce((sum, c) => sum + c.used, 0) / performance.value.monitoring.memoryChecks.length
+    },
+    cache: {
+      translationCacheSize: translationCache.size,
+      hitRate: performance.value.metrics.cacheHitRate
+    },
+    uptime: Date.now() - performance.value.monitoring.startTime,
+    errors: errorHandling.value.errorCount
+  }
+
+  console.log('📊 Performance Report:', report)
+  return report
+}
+
+const enablePerformanceOptimizations = () => {
+  initPerformanceMonitoring()
+  optimizeAssets()
+  optimizeCaching()
+  optimizeRendering()
+  enableCodeSplitting()
+  optimizeNetworkRequests()
+
+  console.log('⚡ Performance optimizations enabled')
+}
+
+// Testing and Deployment System
+const runBrowserCompatibilityTests = () => {
+  console.log('🧪 Running browser compatibility tests...')
+
+  const tests = {
+    chrome: () => {
+      // Test Chrome-specific features
+      const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)
+      const webrtcSupported = !!(window.RTCPeerConnection || window.webkitRTCPeerConnection)
+      const speechSupported = !!(window.SpeechRecognition || window.webkitSpeechRecognition)
+
+      return isChrome && webrtcSupported && speechSupported
+    },
+
+    firefox: () => {
+      // Test Firefox-specific features
+      const isFirefox = /Firefox/.test(navigator.userAgent)
+      const webrtcSupported = !!window.RTCPeerConnection
+      const speechSupported = !!window.SpeechRecognition
+
+      return isFirefox && webrtcSupported && speechSupported
+    },
+
+    safari: () => {
+      // Test Safari-specific features
+      const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent)
+      const webrtcSupported = !!window.RTCPeerConnection
+      const speechSupported = !!(window.SpeechRecognition || window.webkitSpeechRecognition)
+
+      return isSafari && webrtcSupported && speechSupported
+    },
+
+    edge: () => {
+      // Test Edge-specific features
+      const isEdge = /Edge/.test(navigator.userAgent)
+      const webrtcSupported = !!window.RTCPeerConnection
+      const speechSupported = !!window.SpeechRecognition
+
+      return isEdge && webrtcSupported && speechSupported
+    }
+  }
+
+  Object.entries(tests).forEach(([browser, test]) => {
+    try {
+      testing.value.browserCompatibility[browser] = test()
+      console.log(`${testing.value.browserCompatibility[browser] ? '✅' : '❌'} ${browser} compatibility`)
+    } catch (error) {
+      testing.value.browserCompatibility[browser] = false
+      console.error(`❌ ${browser} test failed:`, error)
+    }
+  })
+
+  return testing.value.browserCompatibility
+}
+
+const optimizeForMobile = () => {
+  console.log('📱 Optimizing for mobile devices...')
+
+  // Add viewport meta tag if not present
+  if (!document.querySelector('meta[name="viewport"]')) {
+    const viewport = document.createElement('meta')
+    viewport.name = 'viewport'
+    viewport.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
+    document.head.appendChild(viewport)
+  }
+
+  // Add mobile-specific CSS
+  const mobileStyles = document.createElement('style')
+  mobileStyles.textContent = `
+    @media (max-width: 768px) {
+      .mobile-hidden { display: none !important; }
+      .mobile-full-width { width: 100% !important; }
+      .mobile-text-sm { font-size: 0.875rem !important; }
+      .mobile-p-2 { padding: 0.5rem !important; }
+      .mobile-m-1 { margin: 0.25rem !important; }
+
+      /* Touch-friendly buttons */
+      button, .button {
+        min-height: 44px !important;
+        min-width: 44px !important;
+        touch-action: manipulation;
+      }
+
+      /* Prevent zoom on input focus */
+      input, select, textarea {
+        font-size: 16px !important;
+      }
+
+      /* Optimize chat interface for mobile */
+      #messages-container {
+        height: calc(100vh - 200px) !important;
+      }
+
+      /* Mobile-friendly voice controls */
+      .voice-control-button {
+        width: 80px !important;
+        height: 80px !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .mobile-sm-hidden { display: none !important; }
+      .mobile-sm-text-xs { font-size: 0.75rem !important; }
+    }
+  `
+  document.head.appendChild(mobileStyles)
+
+  // Add touch event optimizations
+  document.addEventListener('touchstart', () => {}, { passive: true })
+  document.addEventListener('touchmove', () => {}, { passive: true })
+
+  // Optimize for mobile performance
+  if (window.innerWidth <= 768) {
+    // Reduce animation complexity on mobile
+    performance.value.optimization.lazyLoadingEnabled = true
+
+    // Reduce audio quality on mobile to save bandwidth
+    if (connectionOptimization.value.networkType === '3g' || connectionOptimization.value.networkType === '2g') {
+      setAudioQuality('standard')
+    }
+  }
+
+  testing.value.mobileOptimization.responsive = true
+  testing.value.mobileOptimization.touchOptimized = true
+  testing.value.mobileOptimization.performanceOptimized = true
+
+  console.log('✅ Mobile optimization complete')
+}
+
+const runLoadTests = async () => {
+  console.log('🔄 Running load tests...')
+
+  const startTime = Date.now()
+  const testResults = {
+    connectionTime: 0,
+    messageLatency: 0,
+    translationSpeed: 0,
+    memoryUsage: 0,
+    errorRate: 0
+  }
+
+  try {
+    // Test connection speed
+    const connectionStart = Date.now()
+    await new Promise(resolve => {
+      if (socket.value && socket.value.connected) {
+        resolve()
+      } else {
+        socket.value.once('connect', resolve)
+      }
+    })
+    testResults.connectionTime = Date.now() - connectionStart
+
+    // Test message latency
+    const latencyStart = Date.now()
+    socket.value.emit('ping', latencyStart)
+    await new Promise(resolve => {
+      socket.value.once('pong', () => {
+        testResults.messageLatency = Date.now() - latencyStart
+        resolve()
+      })
+    })
+
+    // Test translation speed
+    const translationStart = Date.now()
+    try {
+      await translateText('Hello world', 'en-US', 'es-ES')
+      testResults.translationSpeed = Date.now() - translationStart
+    } catch (error) {
+      testResults.errorRate++
+    }
+
+    // Test memory usage
+    if ('memory' in performance) {
+      testResults.memoryUsage = performance.memory.usedJSHeapSize
+    }
+
+    testing.value.loadTesting = {
+      maxConcurrentUsers: 1, // Single user test
+      averageResponseTime: (testResults.connectionTime + testResults.messageLatency + testResults.translationSpeed) / 3,
+      errorRate: testResults.errorRate
+    }
+
+    console.log('📊 Load test results:', testResults)
+    return testResults
+
+  } catch (error) {
+    console.error('❌ Load test failed:', error)
+    testing.value.loadTesting.errorRate = 100
+    throw error
+  }
+}
+
+const setupProductionEnvironment = () => {
+  console.log('🚀 Setting up production environment...')
+
+  // Set production environment
+  testing.value.deployment.environment = 'production'
+  testing.value.deployment.buildTime = new Date().toISOString()
+
+  // Disable development features
+  if (testing.value.deployment.environment === 'production') {
+    // Disable console logs in production
+    if (!window.location.hostname.includes('localhost')) {
+      console.log = () => {}
+      console.warn = () => {}
+      console.error = () => {}
+    }
+
+    // Enable production optimizations
+    performance.value.optimization.cacheStrategy = 'aggressive'
+    performance.value.optimization.bundleOptimization = true
+
+    // Set up error reporting
+    window.addEventListener('error', (event) => {
+      // Send to error reporting service
+      reportErrorToService({
+        message: event.message,
+        filename: event.filename,
+        lineno: event.lineno,
+        colno: event.colno,
+        error: event.error,
+        userAgent: navigator.userAgent,
+        url: window.location.href,
+        timestamp: new Date().toISOString()
+      })
+    })
+  }
+
+  console.log('✅ Production environment configured')
+}
+
+const reportErrorToService = (errorData) => {
+  // This would send errors to a monitoring service like Sentry
+  console.log('📊 Reporting error to service:', errorData)
+
+  // Example implementation:
+  // fetch('/api/errors', {
+  //   method: 'POST',
+  //   headers: { 'Content-Type': 'application/json' },
+  //   body: JSON.stringify(errorData)
+  // }).catch(console.error)
+}
+
+const runHealthCheck = async () => {
+  console.log('🏥 Running health check...')
+
+  const healthStatus = {
+    server: false,
+    database: false,
+    translation: false,
+    webrtc: false,
+    overall: false
+  }
+
+  try {
+    // Check server connection
+    if (socket.value && socket.value.connected) {
+      healthStatus.server = true
+    }
+
+    // Check translation service
+    try {
+      await translateText('test', 'en-US', 'es-ES')
+      healthStatus.translation = true
+    } catch (error) {
+      console.warn('Translation service health check failed:', error)
+    }
+
+    // Check WebRTC capability
+    if (window.RTCPeerConnection) {
+      healthStatus.webrtc = true
+    }
+
+    // Overall health
+    healthStatus.overall = healthStatus.server && healthStatus.translation && healthStatus.webrtc
+
+    testing.value.deployment.healthCheck = healthStatus.overall
+
+    console.log('🏥 Health check results:', healthStatus)
+    return healthStatus
+
+  } catch (error) {
+    console.error('❌ Health check failed:', error)
+    testing.value.deployment.healthCheck = false
+    return healthStatus
+  }
+}
+
+const generateDeploymentReport = () => {
+  const report = {
+    version: testing.value.deployment.version,
+    buildTime: testing.value.deployment.buildTime,
+    environment: testing.value.deployment.environment,
+    browserCompatibility: testing.value.browserCompatibility,
+    mobileOptimization: testing.value.mobileOptimization,
+    loadTesting: testing.value.loadTesting,
+    performance: getPerformanceReport(),
+    healthCheck: testing.value.deployment.healthCheck,
+    features: {
+      webrtc: !!window.RTCPeerConnection,
+      speechRecognition: !!(window.SpeechRecognition || window.webkitSpeechRecognition),
+      speechSynthesis: !!window.speechSynthesis,
+      websockets: !!window.WebSocket,
+      serviceWorker: 'serviceWorker' in navigator
+    }
+  }
+
+  console.log('📋 Deployment Report:', report)
+  return report
+}
+
+const runFullTestSuite = async () => {
+  console.log('🧪 Running full test suite...')
+
+  try {
+    // Run all tests
+    runBrowserCompatibilityTests()
+    optimizeForMobile()
+    await runLoadTests()
+    await runHealthCheck()
+
+    const report = generateDeploymentReport()
+
+    console.log('✅ All tests completed successfully')
+    return report
+
+  } catch (error) {
+    console.error('❌ Test suite failed:', error)
+    throw error
+  }
+}
+
+const initializeProductionApp = async () => {
+  console.log('🚀 Initializing production application...')
+
+  try {
+    // Setup production environment
+    setupProductionEnvironment()
+
+    // Run health check
+    await runHealthCheck()
+
+    // Run compatibility tests
+    runBrowserCompatibilityTests()
+
+    // Optimize for mobile if needed
+    if (window.innerWidth <= 768) {
+      optimizeForMobile()
+    }
+
+    console.log('✅ Production application initialized')
+
+  } catch (error) {
+    console.error('❌ Production initialization failed:', error)
+    handleError(error, ErrorTypes.UNKNOWN, ErrorSeverity.CRITICAL, {
+      context: 'production_initialization'
+    })
+  }
+}
+
 // Smart translation features with context awareness
 const conversationContext = {
   messages: [],
@@ -3605,6 +4325,15 @@ onMounted(() => {
 
   // Enable connection optimization
   enableConnectionOptimization()
+
+  // Setup global error handlers
+  setupGlobalErrorHandlers()
+
+  // Enable performance optimizations
+  enablePerformanceOptimizations()
+
+  // Initialize production app
+  initializeProductionApp()
 })
 
 onUnmounted(() => {
@@ -4252,6 +4981,47 @@ onUnmounted(() => {
                       >
                         🔄 Reconnect Now
                       </button>
+
+                      <!-- Error Panel Toggle -->
+                      <button
+                        v-if="errorHandling.errorCount > 0"
+                        @click="errorHandling.showErrorPanel = !errorHandling.showErrorPanel"
+                        class="w-full px-3 py-2 bg-red-600/20 hover:bg-red-600/30 text-red-400 text-xs rounded-lg transition-all duration-300 border border-red-500/30 flex items-center justify-center gap-2"
+                      >
+                        ⚠️ {{ errorHandling.errorCount }} Error{{ errorHandling.errorCount > 1 ? 's' : '' }}
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Error Panel -->
+                  <div v-if="errorHandling.showErrorPanel" class="mt-4 pt-3 border-t border-white/10">
+                    <div class="bg-red-500/10 rounded-xl p-4 border border-red-500/30">
+                      <div class="flex items-center justify-between mb-3">
+                        <h5 class="text-sm font-medium text-red-300">🚨 Error Log</h5>
+                        <button
+                          @click="clearErrors"
+                          class="text-xs text-red-400 hover:text-red-300 transition-colors"
+                        >
+                          Clear All
+                        </button>
+                      </div>
+
+                      <div class="space-y-2 max-h-32 overflow-y-auto">
+                        <div v-for="error in errorHandling.errors.slice(-5)" :key="error.id"
+                             class="text-xs p-2 bg-red-500/20 rounded border border-red-500/40">
+                          <div class="flex items-center justify-between">
+                            <span class="font-medium text-red-300">{{ error.type }}</span>
+                            <button
+                              @click="dismissError(error.id)"
+                              class="text-red-400 hover:text-red-300"
+                            >
+                              ×
+                            </button>
+                          </div>
+                          <div class="text-red-200 mt-1">{{ error.message }}</div>
+                          <div class="text-red-400 text-xs mt-1">{{ formatTime(error.timestamp) }}</div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

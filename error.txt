@@ -1,0 +1,476 @@
+App.vue:1667 📋 Loaded 478 cached translations
+App.vue:1952 ⚡ Translation optimization initialized
+App.vue:2339 📡 Network type detected: 4g
+App.vue:2374 📶 Adapted to good network: high quality
+App.vue:2594 ⚡ Connection optimization enabled
+App.vue:2949 🛡️ Global error handlers setup complete
+App.vue:3001 📊 Performance monitoring initialized
+App.vue:3062 🖼️ Asset optimization enabled
+App.vue:1427 🔄 Trying MyMemory API...
+App.vue:1427 🔄 Trying MyMemory API...
+App.vue:1898 🚀 Common phrases preloading initiated
+App.vue:3256 ⚡ Performance optimizations enabled
+App.vue:3593 🚀 Initializing production application...
+App.vue:3453 🚀 Setting up production environment...
+App.vue:3488 ✅ Production environment configured
+App.vue:3504 🏥 Running health check...
+App.vue:1427 🔄 Trying MyMemory API...
+App.vue:4310 ✅ Voices loaded: 22
+App.vue:3093 📦 Service Worker registered: ServiceWorkerRegistration {installing: null, waiting: null, active: ServiceWorker, navigationPreload: NavigationPreloadManager, scope: 'http://localhost:5173/', …}
+sw.js:136 Uncaught (in promise) TypeError: Failed to execute 'put' on 'Cache': Request scheme 'chrome-extension' is unsupported
+    at sw.js:136:15
+(anonymous) @ sw.js:136
+Promise.then
+staleWhileRevalidate @ sw.js:134
+await in staleWhileRevalidate
+(anonymous) @ sw.js:82
+App.vue:2962 ⚡ Page loaded in 30ms
+App.vue:214 🔗 Connected to server
+main.js?attr=aztvND1ypTtP5rZWbz0Y11hcu3dU_f9iCKE3AJMylZ5YiYJpLpERc3k2AwYst-r1:3798  GET https://api.mymemory.translated.net/get?q=hello&langpair=fr|it 429 (Too Many Requests)
+fetchCallImpl @ main.js?attr=aztvND1ypTtP5rZWbz0Y11hcu3dU_f9iCKE3AJMylZ5YiYJpLpERc3k2AwYst-r1:3798
+fetch @ main.js?attr=aztvND1ypTtP5rZWbz0Y11hcu3dU_f9iCKE3AJMylZ5YiYJpLpERc3k2AwYst-r1:3804
+translateWithMyMemory @ App.vue:1472
+translateText @ App.vue:1430
+(anonymous) @ App.vue:1885
+(anonymous) @ App.vue:1881
+(anonymous) @ App.vue:1879
+preloadCommonPhrases @ App.vue:1878
+optimizeCaching @ App.vue:3103
+enablePerformanceOptimizations @ App.vue:3251
+(anonymous) @ App.vue:4333
+(anonymous) @ runtime-core.esm-bundler.js:2836
+callWithErrorHandling @ runtime-core.esm-bundler.js:199
+callWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206
+hook.__weh.hook.__weh @ runtime-core.esm-bundler.js:2816
+flushPostFlushCbs @ runtime-core.esm-bundler.js:385
+render2 @ runtime-core.esm-bundler.js:6048
+mount @ runtime-core.esm-bundler.js:3962
+app.mount @ runtime-dom.esm-bundler.js:1775
+(anonymous) @ main.js?t=1754860508303:5
+App.vue:1451 ❌ MyMemory failed: HTTP 429
+translateText @ App.vue:1451
+await in translateText
+(anonymous) @ App.vue:1885
+(anonymous) @ App.vue:1881
+(anonymous) @ App.vue:1879
+preloadCommonPhrases @ App.vue:1878
+optimizeCaching @ App.vue:3103
+enablePerformanceOptimizations @ App.vue:3251
+(anonymous) @ App.vue:4333
+(anonymous) @ runtime-core.esm-bundler.js:2836
+callWithErrorHandling @ runtime-core.esm-bundler.js:199
+callWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206
+hook.__weh.hook.__weh @ runtime-core.esm-bundler.js:2816
+flushPostFlushCbs @ runtime-core.esm-bundler.js:385
+render2 @ runtime-core.esm-bundler.js:6048
+mount @ runtime-core.esm-bundler.js:3962
+app.mount @ runtime-dom.esm-bundler.js:1775
+(anonymous) @ main.js?t=1754860508303:5
+App.vue:1427 🔄 Trying LibreTranslate API...
+  GET https://api.mymemory.translated.net/get?q=test&langpair=en|es 429 (Too Many Requests)
+fetchCallImpl @ main.js:3798
+fetch @ main.js:3804
+window.fetch @ App.vue:3134
+translateWithMyMemory @ App.vue:1477
+translateText @ App.vue:1435
+runHealthCheck @ App.vue:3527
+initializeProductionApp @ App.vue:3605
+(anonymous) @ App.vue:4341
+(anonymous) @ vue.js:4974
+callWithErrorHandling @ vue.js:2293
+callWithAsyncErrorHandling @ vue.js:2300
+hook.__weh.hook.__weh @ vue.js:4954
+flushPostFlushCbs @ vue.js:2479
+render2 @ vue.js:8205
+mount @ vue.js:6104
+app.mount @ vue.js:12389
+(anonymous) @ main.js:5
+App.vue:1451 ❌ MyMemory failed: HTTP 429
+translateText @ App.vue:1451
+await in translateText
+runHealthCheck @ App.vue:3522
+initializeProductionApp @ App.vue:3600
+(anonymous) @ App.vue:4336
+(anonymous) @ runtime-core.esm-bundler.js:2836
+callWithErrorHandling @ runtime-core.esm-bundler.js:199
+callWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206
+hook.__weh.hook.__weh @ runtime-core.esm-bundler.js:2816
+flushPostFlushCbs @ runtime-core.esm-bundler.js:385
+render2 @ runtime-core.esm-bundler.js:6048
+mount @ runtime-core.esm-bundler.js:3962
+app.mount @ runtime-dom.esm-bundler.js:1775
+(anonymous) @ main.js?t=1754860508303:5
+App.vue:1427 🔄 Trying LibreTranslate API...
+main.js?attr=aztvND1ypTtP5rZWbz0Y11hcu3dU_f9iCKE3AJMylZ5YiYJpLpERc3k2AwYst-r1:3798  GET https://api.mymemory.translated.net/get?q=goodbye&langpair=en|de 429 (Too Many Requests)
+fetchCallImpl @ main.js?attr=aztvND1ypTtP5rZWbz0Y11hcu3dU_f9iCKE3AJMylZ5YiYJpLpERc3k2AwYst-r1:3798
+fetch @ main.js?attr=aztvND1ypTtP5rZWbz0Y11hcu3dU_f9iCKE3AJMylZ5YiYJpLpERc3k2AwYst-r1:3804
+translateWithMyMemory @ App.vue:1472
+translateText @ App.vue:1430
+(anonymous) @ App.vue:1885
+(anonymous) @ App.vue:1881
+(anonymous) @ App.vue:1879
+preloadCommonPhrases @ App.vue:1878
+optimizeCaching @ App.vue:3103
+enablePerformanceOptimizations @ App.vue:3251
+(anonymous) @ App.vue:4333
+(anonymous) @ runtime-core.esm-bundler.js:2836
+callWithErrorHandling @ runtime-core.esm-bundler.js:199
+callWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206
+hook.__weh.hook.__weh @ runtime-core.esm-bundler.js:2816
+flushPostFlushCbs @ runtime-core.esm-bundler.js:385
+render2 @ runtime-core.esm-bundler.js:6048
+mount @ runtime-core.esm-bundler.js:3962
+app.mount @ runtime-dom.esm-bundler.js:1775
+(anonymous) @ main.js?t=1754860508303:5
+App.vue:1451 ❌ MyMemory failed: HTTP 429
+translateText @ App.vue:1451
+await in translateText
+(anonymous) @ App.vue:1885
+(anonymous) @ App.vue:1881
+(anonymous) @ App.vue:1879
+preloadCommonPhrases @ App.vue:1878
+optimizeCaching @ App.vue:3103
+enablePerformanceOptimizations @ App.vue:3251
+(anonymous) @ App.vue:4333
+(anonymous) @ runtime-core.esm-bundler.js:2836
+callWithErrorHandling @ runtime-core.esm-bundler.js:199
+callWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206
+hook.__weh.hook.__weh @ runtime-core.esm-bundler.js:2816
+flushPostFlushCbs @ runtime-core.esm-bundler.js:385
+render2 @ runtime-core.esm-bundler.js:6048
+mount @ runtime-core.esm-bundler.js:3962
+app.mount @ runtime-dom.esm-bundler.js:1775
+(anonymous) @ main.js?t=1754860508303:5
+App.vue:1427 🔄 Trying LibreTranslate API...
+localhost/:1 Access to fetch at 'https://libretranslate.de/translate' from origin 'http://localhost:5173' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: Redirect is not allowed for a preflight request.
+main.js?attr=aztvND1ypTtP5rZWbz0Y11hcu3dU_f9iCKE3AJMylZ5YiYJpLpERc3k2AwYst-r1:3798  POST https://libretranslate.de/translate net::ERR_FAILED
+fetchCallImpl @ main.js?attr=aztvND1ypTtP5rZWbz0Y11hcu3dU_f9iCKE3AJMylZ5YiYJpLpERc3k2AwYst-r1:3798
+fetch @ main.js?attr=aztvND1ypTtP5rZWbz0Y11hcu3dU_f9iCKE3AJMylZ5YiYJpLpERc3k2AwYst-r1:3804
+window.fetch @ App.vue:3129
+translateWithLibreTranslate @ App.vue:1492
+translateText @ App.vue:1430
+await in translateText
+(anonymous) @ App.vue:1885
+(anonymous) @ App.vue:1881
+(anonymous) @ App.vue:1879
+preloadCommonPhrases @ App.vue:1878
+optimizeCaching @ App.vue:3103
+enablePerformanceOptimizations @ App.vue:3251
+(anonymous) @ App.vue:4333
+(anonymous) @ runtime-core.esm-bundler.js:2836
+callWithErrorHandling @ runtime-core.esm-bundler.js:199
+callWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206
+hook.__weh.hook.__weh @ runtime-core.esm-bundler.js:2816
+flushPostFlushCbs @ runtime-core.esm-bundler.js:385
+render2 @ runtime-core.esm-bundler.js:6048
+mount @ runtime-core.esm-bundler.js:3962
+app.mount @ runtime-dom.esm-bundler.js:1775
+(anonymous) @ main.js?t=1754860508303:5
+App.vue:1451 ❌ LibreTranslate failed: Failed to fetch
+translateText @ App.vue:1451
+await in translateText
+(anonymous) @ App.vue:1885
+(anonymous) @ App.vue:1881
+(anonymous) @ App.vue:1879
+preloadCommonPhrases @ App.vue:1878
+optimizeCaching @ App.vue:3103
+enablePerformanceOptimizations @ App.vue:3251
+(anonymous) @ App.vue:4333
+(anonymous) @ runtime-core.esm-bundler.js:2836
+callWithErrorHandling @ runtime-core.esm-bundler.js:199
+callWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206
+hook.__weh.hook.__weh @ runtime-core.esm-bundler.js:2816
+flushPostFlushCbs @ runtime-core.esm-bundler.js:385
+render2 @ runtime-core.esm-bundler.js:6048
+mount @ runtime-core.esm-bundler.js:3962
+app.mount @ runtime-dom.esm-bundler.js:1775
+(anonymous) @ main.js?t=1754860508303:5
+App.vue:1427 🔄 Trying GoogleTranslate API...
+App.vue:1451 ❌ GoogleTranslate failed: Google Translate API key required
+translateText @ App.vue:1451
+await in translateText
+(anonymous) @ App.vue:1885
+(anonymous) @ App.vue:1881
+(anonymous) @ App.vue:1879
+preloadCommonPhrases @ App.vue:1878
+optimizeCaching @ App.vue:3103
+enablePerformanceOptimizations @ App.vue:3251
+(anonymous) @ App.vue:4333
+(anonymous) @ runtime-core.esm-bundler.js:2836
+callWithErrorHandling @ runtime-core.esm-bundler.js:199
+callWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206
+hook.__weh.hook.__weh @ runtime-core.esm-bundler.js:2816
+flushPostFlushCbs @ runtime-core.esm-bundler.js:385
+render2 @ runtime-core.esm-bundler.js:6048
+mount @ runtime-core.esm-bundler.js:3962
+app.mount @ runtime-dom.esm-bundler.js:1775
+(anonymous) @ main.js?t=1754860508303:5
+App.vue:1427 🔄 Trying FallbackDictionary API...
+App.vue:1451 ❌ FallbackDictionary failed: No dictionary translation found
+translateText @ App.vue:1451
+await in translateText
+(anonymous) @ App.vue:1885
+(anonymous) @ App.vue:1881
+(anonymous) @ App.vue:1879
+preloadCommonPhrases @ App.vue:1878
+optimizeCaching @ App.vue:3103
+enablePerformanceOptimizations @ App.vue:3251
+(anonymous) @ App.vue:4333
+(anonymous) @ runtime-core.esm-bundler.js:2836
+callWithErrorHandling @ runtime-core.esm-bundler.js:199
+callWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206
+hook.__weh.hook.__weh @ runtime-core.esm-bundler.js:2816
+flushPostFlushCbs @ runtime-core.esm-bundler.js:385
+render2 @ runtime-core.esm-bundler.js:6048
+mount @ runtime-core.esm-bundler.js:3962
+app.mount @ runtime-dom.esm-bundler.js:1775
+(anonymous) @ main.js?t=1754860508303:5
+App.vue:1465 🚨 All translation APIs failed: (4) [{…}, {…}, {…}, {…}]
+translateText @ App.vue:1465
+await in translateText
+(anonymous) @ App.vue:1885
+(anonymous) @ App.vue:1881
+(anonymous) @ App.vue:1879
+preloadCommonPhrases @ App.vue:1878
+optimizeCaching @ App.vue:3103
+enablePerformanceOptimizations @ App.vue:3251
+(anonymous) @ App.vue:4333
+(anonymous) @ runtime-core.esm-bundler.js:2836
+callWithErrorHandling @ runtime-core.esm-bundler.js:199
+callWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206
+hook.__weh.hook.__weh @ runtime-core.esm-bundler.js:2816
+flushPostFlushCbs @ runtime-core.esm-bundler.js:385
+render2 @ runtime-core.esm-bundler.js:6048
+mount @ runtime-core.esm-bundler.js:3962
+app.mount @ runtime-dom.esm-bundler.js:1775
+(anonymous) @ main.js?t=1754860508303:5
+localhost/:1 Access to fetch at 'https://libretranslate.de/translate' from origin 'http://localhost:5173' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: Redirect is not allowed for a preflight request.
+main.js?attr=aztvND1ypTtP5rZWbz0Y11hcu3dU_f9iCKE3AJMylZ5YiYJpLpERc3k2AwYst-r1:3798  POST https://libretranslate.de/translate net::ERR_FAILED
+fetchCallImpl @ main.js?attr=aztvND1ypTtP5rZWbz0Y11hcu3dU_f9iCKE3AJMylZ5YiYJpLpERc3k2AwYst-r1:3798
+fetch @ main.js?attr=aztvND1ypTtP5rZWbz0Y11hcu3dU_f9iCKE3AJMylZ5YiYJpLpERc3k2AwYst-r1:3804
+window.fetch @ App.vue:3129
+translateWithLibreTranslate @ App.vue:1492
+translateText @ App.vue:1430
+await in translateText
+runHealthCheck @ App.vue:3522
+initializeProductionApp @ App.vue:3600
+(anonymous) @ App.vue:4336
+(anonymous) @ runtime-core.esm-bundler.js:2836
+callWithErrorHandling @ runtime-core.esm-bundler.js:199
+callWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206
+hook.__weh.hook.__weh @ runtime-core.esm-bundler.js:2816
+flushPostFlushCbs @ runtime-core.esm-bundler.js:385
+render2 @ runtime-core.esm-bundler.js:6048
+mount @ runtime-core.esm-bundler.js:3962
+app.mount @ runtime-dom.esm-bundler.js:1775
+(anonymous) @ main.js?t=1754860508303:5
+App.vue:1451 ❌ LibreTranslate failed: Failed to fetch
+translateText @ App.vue:1451
+await in translateText
+runHealthCheck @ App.vue:3522
+initializeProductionApp @ App.vue:3600
+(anonymous) @ App.vue:4336
+(anonymous) @ runtime-core.esm-bundler.js:2836
+callWithErrorHandling @ runtime-core.esm-bundler.js:199
+callWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206
+hook.__weh.hook.__weh @ runtime-core.esm-bundler.js:2816
+flushPostFlushCbs @ runtime-core.esm-bundler.js:385
+render2 @ runtime-core.esm-bundler.js:6048
+mount @ runtime-core.esm-bundler.js:3962
+app.mount @ runtime-dom.esm-bundler.js:1775
+(anonymous) @ main.js?t=1754860508303:5
+App.vue:1427 🔄 Trying GoogleTranslate API...
+App.vue:1451 ❌ GoogleTranslate failed: Google Translate API key required
+translateText @ App.vue:1451
+await in translateText
+runHealthCheck @ App.vue:3522
+initializeProductionApp @ App.vue:3600
+(anonymous) @ App.vue:4336
+(anonymous) @ runtime-core.esm-bundler.js:2836
+callWithErrorHandling @ runtime-core.esm-bundler.js:199
+callWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206
+hook.__weh.hook.__weh @ runtime-core.esm-bundler.js:2816
+flushPostFlushCbs @ runtime-core.esm-bundler.js:385
+render2 @ runtime-core.esm-bundler.js:6048
+mount @ runtime-core.esm-bundler.js:3962
+app.mount @ runtime-dom.esm-bundler.js:1775
+(anonymous) @ main.js?t=1754860508303:5
+App.vue:1427 🔄 Trying FallbackDictionary API...
+App.vue:1451 ❌ FallbackDictionary failed: No dictionary translation found
+translateText @ App.vue:1451
+await in translateText
+runHealthCheck @ App.vue:3522
+initializeProductionApp @ App.vue:3600
+(anonymous) @ App.vue:4336
+(anonymous) @ runtime-core.esm-bundler.js:2836
+callWithErrorHandling @ runtime-core.esm-bundler.js:199
+callWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206
+hook.__weh.hook.__weh @ runtime-core.esm-bundler.js:2816
+flushPostFlushCbs @ runtime-core.esm-bundler.js:385
+render2 @ runtime-core.esm-bundler.js:6048
+mount @ runtime-core.esm-bundler.js:3962
+app.mount @ runtime-dom.esm-bundler.js:1775
+(anonymous) @ main.js?t=1754860508303:5
+App.vue:1465 🚨 All translation APIs failed: (4) [{…}, {…}, {…}, {…}]
+translateText @ App.vue:1465
+await in translateText
+runHealthCheck @ App.vue:3522
+initializeProductionApp @ App.vue:3600
+(anonymous) @ App.vue:4336
+(anonymous) @ runtime-core.esm-bundler.js:2836
+callWithErrorHandling @ runtime-core.esm-bundler.js:199
+callWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206
+hook.__weh.hook.__weh @ runtime-core.esm-bundler.js:2816
+flushPostFlushCbs @ runtime-core.esm-bundler.js:385
+render2 @ runtime-core.esm-bundler.js:6048
+mount @ runtime-core.esm-bundler.js:3962
+app.mount @ runtime-dom.esm-bundler.js:1775
+(anonymous) @ main.js?t=1754860508303:5
+App.vue:3538 🏥 Health check results: {server: false, database: false, translation: true, webrtc: true, overall: false}
+App.vue:3261 🧪 Running browser compatibility tests...
+App.vue:3304 ✅ chrome compatibility
+App.vue:3304 ❌ firefox compatibility
+App.vue:3304 ❌ safari compatibility
+App.vue:3304 ❌ edge compatibility
+App.vue:3610 ✅ Production application initialized
+localhost/:1 Access to fetch at 'https://libretranslate.de/translate' from origin 'http://localhost:5173' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: Redirect is not allowed for a preflight request.
+main.js?attr=aztvND1ypTtP5rZWbz0Y11hcu3dU_f9iCKE3AJMylZ5YiYJpLpERc3k2AwYst-r1:3798  POST https://libretranslate.de/translate net::ERR_FAILED
+fetchCallImpl @ main.js?attr=aztvND1ypTtP5rZWbz0Y11hcu3dU_f9iCKE3AJMylZ5YiYJpLpERc3k2AwYst-r1:3798
+fetch @ main.js?attr=aztvND1ypTtP5rZWbz0Y11hcu3dU_f9iCKE3AJMylZ5YiYJpLpERc3k2AwYst-r1:3804
+window.fetch @ App.vue:3129
+translateWithLibreTranslate @ App.vue:1492
+translateText @ App.vue:1430
+await in translateText
+(anonymous) @ App.vue:1885
+(anonymous) @ App.vue:1881
+(anonymous) @ App.vue:1879
+preloadCommonPhrases @ App.vue:1878
+optimizeCaching @ App.vue:3103
+enablePerformanceOptimizations @ App.vue:3251
+(anonymous) @ App.vue:4333
+(anonymous) @ runtime-core.esm-bundler.js:2836
+callWithErrorHandling @ runtime-core.esm-bundler.js:199
+callWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206
+hook.__weh.hook.__weh @ runtime-core.esm-bundler.js:2816
+flushPostFlushCbs @ runtime-core.esm-bundler.js:385
+render2 @ runtime-core.esm-bundler.js:6048
+mount @ runtime-core.esm-bundler.js:3962
+app.mount @ runtime-dom.esm-bundler.js:1775
+(anonymous) @ main.js?t=1754860508303:5
+App.vue:1451 ❌ LibreTranslate failed: Failed to fetch
+translateText @ App.vue:1451
+await in translateText
+(anonymous) @ App.vue:1885
+(anonymous) @ App.vue:1881
+(anonymous) @ App.vue:1879
+preloadCommonPhrases @ App.vue:1878
+optimizeCaching @ App.vue:3103
+enablePerformanceOptimizations @ App.vue:3251
+(anonymous) @ App.vue:4333
+(anonymous) @ runtime-core.esm-bundler.js:2836
+callWithErrorHandling @ runtime-core.esm-bundler.js:199
+callWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206
+hook.__weh.hook.__weh @ runtime-core.esm-bundler.js:2816
+flushPostFlushCbs @ runtime-core.esm-bundler.js:385
+render2 @ runtime-core.esm-bundler.js:6048
+mount @ runtime-core.esm-bundler.js:3962
+app.mount @ runtime-dom.esm-bundler.js:1775
+(anonymous) @ main.js?t=1754860508303:5
+App.vue:1427 🔄 Trying GoogleTranslate API...
+App.vue:1451 ❌ GoogleTranslate failed: Google Translate API key required
+translateText @ App.vue:1451
+await in translateText
+(anonymous) @ App.vue:1885
+(anonymous) @ App.vue:1881
+(anonymous) @ App.vue:1879
+preloadCommonPhrases @ App.vue:1878
+optimizeCaching @ App.vue:3103
+enablePerformanceOptimizations @ App.vue:3251
+(anonymous) @ App.vue:4333
+(anonymous) @ runtime-core.esm-bundler.js:2836
+callWithErrorHandling @ runtime-core.esm-bundler.js:199
+callWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206
+hook.__weh.hook.__weh @ runtime-core.esm-bundler.js:2816
+flushPostFlushCbs @ runtime-core.esm-bundler.js:385
+render2 @ runtime-core.esm-bundler.js:6048
+mount @ runtime-core.esm-bundler.js:3962
+app.mount @ runtime-dom.esm-bundler.js:1775
+(anonymous) @ main.js?t=1754860508303:5
+App.vue:1427 🔄 Trying FallbackDictionary API...
+App.vue:1451 ❌ FallbackDictionary failed: No dictionary translation found
+translateText @ App.vue:1451
+await in translateText
+(anonymous) @ App.vue:1885
+(anonymous) @ App.vue:1881
+(anonymous) @ App.vue:1879
+preloadCommonPhrases @ App.vue:1878
+optimizeCaching @ App.vue:3103
+enablePerformanceOptimizations @ App.vue:3251
+(anonymous) @ App.vue:4333
+(anonymous) @ runtime-core.esm-bundler.js:2836
+callWithErrorHandling @ runtime-core.esm-bundler.js:199
+callWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206
+hook.__weh.hook.__weh @ runtime-core.esm-bundler.js:2816
+flushPostFlushCbs @ runtime-core.esm-bundler.js:385
+render2 @ runtime-core.esm-bundler.js:6048
+mount @ runtime-core.esm-bundler.js:3962
+app.mount @ runtime-dom.esm-bundler.js:1775
+(anonymous) @ main.js?t=1754860508303:5
+App.vue:1465 🚨 All translation APIs failed: (4) [{…}, {…}, {…}, {…}]0: {api: 'MyMemory', error: 'HTTP 429'}1: {api: 'LibreTranslate', error: 'Failed to fetch'}2: {api: 'GoogleTranslate', error: 'Google Translate API key required'}3: {api: 'FallbackDictionary', error: 'No dictionary translation found'}length: 4[[Prototype]]: Array(0)
+translateText @ App.vue:1465
+await in translateText
+(anonymous) @ App.vue:1885
+(anonymous) @ App.vue:1881
+(anonymous) @ App.vue:1879
+preloadCommonPhrases @ App.vue:1878
+optimizeCaching @ App.vue:3103
+enablePerformanceOptimizations @ App.vue:3251
+(anonymous) @ App.vue:4333
+(anonymous) @ runtime-core.esm-bundler.js:2836
+callWithErrorHandling @ runtime-core.esm-bundler.js:199
+callWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206
+hook.__weh.hook.__weh @ runtime-core.esm-bundler.js:2816
+flushPostFlushCbs @ runtime-core.esm-bundler.js:385
+render2 @ runtime-core.esm-bundler.js:6048
+mount @ runtime-core.esm-bundler.js:3962
+app.mount @ runtime-dom.esm-bundler.js:1775
+(anonymous) @ main.js?t=1754860508303:5
+App.vue:1465 🚨 All translation APIs failed: []
+translateText @ App.vue:1465
+(anonymous) @ App.vue:1885
+(anonymous) @ App.vue:1881
+(anonymous) @ App.vue:1879
+preloadCommonPhrases @ App.vue:1878
+(anonymous) @ App.vue:1944
+setTimeout
+initializeTranslationOptimization @ App.vue:1943
+(anonymous) @ App.vue:4319
+(anonymous) @ runtime-core.esm-bundler.js:2836
+callWithErrorHandling @ runtime-core.esm-bundler.js:199
+callWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206
+hook.__weh.hook.__weh @ runtime-core.esm-bundler.js:2816
+flushPostFlushCbs @ runtime-core.esm-bundler.js:385
+render2 @ runtime-core.esm-bundler.js:6048
+mount @ runtime-core.esm-bundler.js:3962
+app.mount @ runtime-dom.esm-bundler.js:1775
+(anonymous) @ main.js?t=1754860508303:5
+App.vue:1465 🚨 All translation APIs failed: []
+translateText @ App.vue:1465
+(anonymous) @ App.vue:1885
+(anonymous) @ App.vue:1881
+(anonymous) @ App.vue:1879
+preloadCommonPhrases @ App.vue:1878
+(anonymous) @ App.vue:1944
+setTimeout
+initializeTranslationOptimization @ App.vue:1943
+(anonymous) @ App.vue:4319
+(anonymous) @ runtime-core.esm-bundler.js:2836
+callWithErrorHandling @ runtime-core.esm-bundler.js:199
+callWithAsyncErrorHandling @ runtime-core.esm-bundler.js:206
+hook.__weh.hook.__weh @ runtime-core.esm-bundler.js:2816
+flushPostFlushCbs @ runtime-core.esm-bundler.js:385
+render2 @ runtime-core.esm-bundler.js:6048
+mount @ runtime-core.esm-bundler.js:3962
+app.mount @ runtime-dom.esm-bundler.js:1775
+(anonymous) @ main.js?t=1754860508303:5
+App.vue:1898 🚀 Common phrases preloading initiated
