@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translation Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .result {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 3px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 3px;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Translation API Test</h1>
+    
+    <div class="test-section">
+        <h2>Dictionary Translation Test</h2>
+        <button onclick="testDictionary()">Test Dictionary</button>
+        <div id="dictionary-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>MyMemory API Test</h2>
+        <button onclick="testMyMemory()">Test MyMemory</button>
+        <div id="mymemory-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>LibreTranslate API Test</h2>
+        <button onclick="testLibreTranslate()">Test LibreTranslate</button>
+        <div id="libretranslate-result" class="result"></div>
+    </div>
+
+    <script>
+        // Copy the translation functions from App.vue for testing
+        
+        // Dictionary translation
+        const translateWithDictionary = async (text, fromCode, toCode) => {
+            const commonPhrases = {
+                "en|es": {
+                    hello: "hola",
+                    hi: "hola",
+                    "thank you": "gracias",
+                    thanks: "gracias",
+                    goodbye: "adiós",
+                    yes: "sí",
+                    no: "no"
+                },
+                "es|en": {
+                    hola: "hello",
+                    gracias: "thank you",
+                    adiós: "goodbye",
+                    sí: "yes",
+                    no: "no"
+                }
+            };
+
+            const langPair = `${fromCode}|${toCode}`;
+            const phrases = commonPhrases[langPair];
+
+            if (phrases) {
+                const lowerText = text.toLowerCase().trim();
+                if (phrases[lowerText]) {
+                    return phrases[lowerText];
+                }
+            }
+
+            if (text.length < 50) {
+                return `[${text}]`;
+            }
+
+            throw new Error("No dictionary translation found");
+        };
+
+        // MyMemory API
+        const translateWithMyMemory = async (text, fromCode, toCode) => {
+            const rateLimitKey = 'mymemory_rate_limit';
+            const lastRateLimit = localStorage.getItem(rateLimitKey);
+            if (lastRateLimit && Date.now() - parseInt(lastRateLimit) < 3600000) {
+                throw new Error('Rate limit cooldown active');
+            }
+
+            const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${fromCode}|${toCode}`;
+            
+            const response = await fetch(url, {
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (compatible; TranslationApp/1.0)'
+                }
+            });
+
+            if (response.status === 429) {
+                localStorage.setItem(rateLimitKey, Date.now().toString());
+                throw new Error('Rate limit exceeded');
+            }
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (data.responseStatus === 200 && data.responseData?.translatedText) {
+                return data.responseData.translatedText;
+            }
+
+            throw new Error('Invalid response format');
+        };
+
+        // LibreTranslate API
+        const translateWithLibreTranslate = async (text, fromCode, toCode) => {
+            const endpoints = [
+                'https://translate.argosopentech.com/translate',
+                'https://libretranslate.com/translate'
+            ];
+
+            for (const url of endpoints) {
+                try {
+                    const response = await fetch(url, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json"
+                        },
+                        body: JSON.stringify({
+                            q: text,
+                            source: fromCode,
+                            target: toCode,
+                            format: "text",
+                        }),
+                    });
+
+                    if (!response.ok) {
+                        continue;
+                    }
+
+                    const data = await response.json();
+                    if (data.translatedText) {
+                        return data.translatedText;
+                    }
+                } catch (error) {
+                    continue;
+                }
+            }
+
+            throw new Error("All LibreTranslate endpoints failed");
+        };
+
+        // Test functions
+        async function testDictionary() {
+            const result = document.getElementById('dictionary-result');
+            result.innerHTML = 'Testing...';
+            
+            try {
+                const translation = await translateWithDictionary('hello', 'en', 'es');
+                result.innerHTML = `✅ Success: "hello" → "${translation}"`;
+                result.className = 'result success';
+            } catch (error) {
+                result.innerHTML = `❌ Error: ${error.message}`;
+                result.className = 'result error';
+            }
+        }
+
+        async function testMyMemory() {
+            const result = document.getElementById('mymemory-result');
+            result.innerHTML = 'Testing...';
+            
+            try {
+                const translation = await translateWithMyMemory('hello', 'en', 'es');
+                result.innerHTML = `✅ Success: "hello" → "${translation}"`;
+                result.className = 'result success';
+            } catch (error) {
+                result.innerHTML = `❌ Error: ${error.message}`;
+                result.className = 'result error';
+            }
+        }
+
+        async function testLibreTranslate() {
+            const result = document.getElementById('libretranslate-result');
+            result.innerHTML = 'Testing...';
+            
+            try {
+                const translation = await translateWithLibreTranslate('hello', 'en', 'es');
+                result.innerHTML = `✅ Success: "hello" → "${translation}"`;
+                result.className = 'result success';
+            } catch (error) {
+                result.innerHTML = `❌ Error: ${error.message}`;
+                result.className = 'result error';
+            }
+        }
+    </script>
+</body>
+</html>
